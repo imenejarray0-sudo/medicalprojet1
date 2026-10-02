@@ -1,60 +1,47 @@
 from django.shortcuts import render, redirect
-from .models import Medecin
+from .models import Patient
 from django.contrib.auth.decorators import login_required
-
-# Liste des médecins
 @login_required
-def liste_medecins(request):
-    medecins = Medecin.objects.all()
-    return render(request, 'medecins/liste.html', {'medecins': medecins})
+def liste_patients(request):
+    patients = Patient.objects.all()
+    return render(request, 'patients/liste.html', {'patients': patients})
 
-
-# Ajouter médecin
 @login_required
-def ajouter_medecin(request):
+def ajouter_patient(request):
     if request.method == "POST":
-
         nom = request.POST['nom']
         prenom = request.POST['prenom']
-        specialite = request.POST['specialite']
         telephone = request.POST['telephone']
+        adresse = request.POST['adresse']
 
-        Medecin.objects.create(
+        Patient.objects.create(
             nom=nom,
             prenom=prenom,
-            specialite=specialite,
-            telephone=telephone
+            telephone=telephone,
+            adresse=adresse
         )
 
-        return redirect('liste_medecins')
+        return redirect('liste_patients')
 
-    return render(request, 'medecins/ajouter.html')
-# Modifier médecin
+    return render(request, 'patients/ajouter.html')
 @login_required
-def modifier_medecin(request, id):
-
-    medecin = Medecin.objects.get(id=id)
+def modifier_patient(request, id):
+    patient = Patient.objects.get(id=id)
 
     if request.method == "POST":
+        patient.nom = request.POST['nom']
+        patient.prenom = request.POST['prenom']
+        patient.telephone = request.POST['telephone']
+        patient.adresse = request.POST['adresse']
 
-        medecin.nom = request.POST['nom']
-        medecin.prenom = request.POST['prenom']
-        medecin.specialite = request.POST['specialite']
-        medecin.telephone = request.POST['telephone']
+        patient.save()
 
-        medecin.save()
+        return redirect('liste_patients')
 
-        return redirect('liste_medecins')
-
-
-    return render(request, 'medecins/modifier.html',
-                  {'medecin': medecin})
-# Supprimer médecin
+    return render(request, 'patients/modifier.html', {'patient': patient})
 @login_required
-def supprimer_medecin(request, id):
+def supprimer_patient(request, id):
+    patient = Patient.objects.get(id=id)
+    patient.delete()
 
-    medecin = Medecin.objects.get(id=id)
-
-    medecin.delete()
-
-    return redirect('liste_medecins')
+    return redirect('liste_patients')

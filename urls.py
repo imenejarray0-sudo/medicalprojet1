@@ -1,27 +1,9 @@
 from django.urls import path
-
-from .views import (
-    liste_medecins,
-    ajouter_medecin,
-    modifier_medecin,
-    supprimer_medecin
-)
-
+from .views import liste_patients, ajouter_patient , modifier_patient , supprimer_patient
 
 urlpatterns = [
-
-    path('', liste_medecins, name='liste_medecins'),
-
-    path('ajouter/',
-         ajouter_medecin,
-         name='ajouter_medecin'),
-
-    path('modifier/<int:id>/',
-         modifier_medecin,
-         name='modifier_medecin'),
-
-    path('supprimer/<int:id>/',
-         supprimer_medecin,
-         name='supprimer_medecin'),
-
+    path('', liste_patients, name='liste_patients'),
+    path('ajouter/', ajouter_patient, name='ajouter_patient'),
+    path('modifier/<int:id>/', modifier_patient, name='modifier_patient'),
+    path('supprimer/<int:id>/', supprimer_patient, name='supprimer_patient'),
 ]
