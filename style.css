@@ -1,0 +1,110 @@
+body {
+
+    font-family: Arial, sans-serif;
+    background: #f4f8fb;
+    margin: 0;
+    padding: 20px;
+
+}
+
+
+
+h1 {
+
+    text-align: center;
+    color: #1976d2;
+
+}
+
+
+
+h2 {
+
+    color: #333;
+
+}
+
+
+
+.dashboard {
+
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+
+}
+
+
+
+.card {
+
+    background: white;
+    width: 220px;
+    padding: 25px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px #ccc;
+
+}
+
+
+
+.card h3 {
+
+    color: #1976d2;
+
+}
+
+
+
+.card p {
+
+    font-size: 35px;
+    font-weight: bold;
+
+}
+
+
+
+a {
+
+    text-decoration: none;
+    color: #1976d2;
+    font-size: 18px;
+
+}
+.navbar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px #ccc;
+
+}
+
+
+.navbar h2 {
+
+    color: #1976d2;
+
+}
+
+
+.navbar a {
+
+    margin-left: 15px;
+    color: #333;
+    font-size: 16px;
+
+}
+
+
+.navbar a:hover {
+
+    color: #1976d2;
+
+}
