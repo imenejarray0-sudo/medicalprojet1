@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ConsultationsConfig(AppConfig):
-    name = 'consultations'
+class MedecinsConfig(AppConfig):
+    name = 'medecins'
