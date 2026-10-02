@@ -1,47 +1,88 @@
 from django.shortcuts import render, redirect
-from .models import Patient
+from .models import RendezVous
+from patients.models import Patient
+from medecins.models import Medecin
 from django.contrib.auth.decorators import login_required
+# Liste des rendez-vous
 @login_required
-def liste_patients(request):
+def liste_rendezvous(request):
+    rendezvous = RendezVous.objects.all()
+    return render(request, 'rendezvous/liste.html',
+                  {'rendezvous': rendezvous})
+
+
+# Ajouter rendez-vous
+@login_required
+def ajouter_rendezvous(request):
+
     patients = Patient.objects.all()
-    return render(request, 'patients/liste.html', {'patients': patients})
+    medecins = Medecin.objects.all()
 
-@login_required
-def ajouter_patient(request):
     if request.method == "POST":
-        nom = request.POST['nom']
-        prenom = request.POST['prenom']
-        telephone = request.POST['telephone']
-        adresse = request.POST['adresse']
 
-        Patient.objects.create(
-            nom=nom,
-            prenom=prenom,
-            telephone=telephone,
-            adresse=adresse
+        patient = request.POST['patient']
+        medecin = request.POST['medecin']
+        date = request.POST['date']
+        heure = request.POST['heure']
+        motif = request.POST['motif']
+
+
+        RendezVous.objects.create(
+            patient_id=patient,
+            medecin_id=medecin,
+            date=date,
+            heure=heure,
+            motif=motif
         )
 
-        return redirect('liste_patients')
+        return redirect('liste_rendezvous')
 
-    return render(request, 'patients/ajouter.html')
+
+    return render(request, 'rendezvous/ajouter.html',
+                  {
+                    'patients': patients,
+                    'medecins': medecins
+                  })
+
+
+# Modifier rendez-vous
 @login_required
-def modifier_patient(request, id):
-    patient = Patient.objects.get(id=id)
+def modifier_rendezvous(request, id):
+
+    rendezvous = RendezVous.objects.get(id=id)
+
+    patients = Patient.objects.all()
+    medecins = Medecin.objects.all()
+
 
     if request.method == "POST":
-        patient.nom = request.POST['nom']
-        patient.prenom = request.POST['prenom']
-        patient.telephone = request.POST['telephone']
-        patient.adresse = request.POST['adresse']
 
-        patient.save()
+        rendezvous.patient_id = request.POST['patient']
+        rendezvous.medecin_id = request.POST['medecin']
+        rendezvous.date = request.POST['date']
+        rendezvous.heure = request.POST['heure']
+        rendezvous.motif = request.POST['motif']
 
-        return redirect('liste_patients')
+        rendezvous.save()
 
-    return render(request, 'patients/modifier.html', {'patient': patient})
+        return redirect('liste_rendezvous')
+
+
+    return render(request,
+                  'rendezvous/modifier.html',
+                  {
+                    'rendezvous': rendezvous,
+                    'patients': patients,
+                    'medecins': medecins
+                  })
+
+
+# Supprimer rendez-vous
 @login_required
-def supprimer_patient(request, id):
-    patient = Patient.objects.get(id=id)
-    patient.delete()
+def supprimer_rendezvous(request, id):
 
-    return redirect('liste_patients')
+    rendezvous = RendezVous.objects.get(id=id)
+
+    rendezvous.delete()
+
+    return redirect('liste_rendezvous')

@@ -1,12 +1,22 @@
 from django.db import models
+from patients.models import Patient
+from medecins.models import Medecin
 
-class Patient(models.Model):
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    date_naissance = models.DateField()
-    sexe = models.CharField(max_length=10)
-    telephone = models.CharField(max_length=20)
-    adresse = models.TextField()
+
+class RendezVous(models.Model):
+    patient = models.ForeignKey(
+        Patient,
+        on_delete=models.CASCADE
+    )
+
+    medecin = models.ForeignKey(
+        Medecin,
+        on_delete=models.CASCADE
+    )
+
+    date = models.DateField()
+    heure = models.TimeField()
+    motif = models.TextField()
 
     def __str__(self):
-        return f"{self.nom} {self.prenom}"
+        return f"{self.patient} - {self.medecin} - {self.date}"
