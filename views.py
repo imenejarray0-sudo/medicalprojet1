@@ -1,27 +1,29 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from patients.models import Patient
-from medecins.models import Medecin
-from rendezvous.models import RendezVous
-from consultations.models import Consultation
-@login_required
-def home(request):
-    nombre_patients = Patient.objects.count()
-
-    nombre_medecins = Medecin.objects.count()
-
-    nombre_rendezvous = RendezVous.objects.count()
-
-    nombre_consultations = Consultation.objects.count()
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
 
 
-    return render(
-        request,
-        'home.html',
-        {
-            'patients': nombre_patients,
-            'medecins': nombre_medecins,
-            'rendezvous': nombre_rendezvous,
-            'consultations': nombre_consultations,
-        }
-    )
+def login_view(request):
+
+    if request.method == "POST":
+
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+
+    return render(request, 'accounts/login.html')
+
+
+
+def logout_view(request):
+
+    logout(request)
+
+    return redirect('/accounts/login/')

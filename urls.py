@@ -1,13 +1,15 @@
-from django.contrib import admin
-from django.urls import path, include
-from .views import home
+from django.urls import path
+from .views import login_view, logout_view
+
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('patients/', include('patients.urls')),
-    path('medecins/', include('medecins.urls')),
-    path('rendezvous/', include('rendezvous.urls')),
-    path('consultations/', include('consultations.urls')),
+
+    path('login/',
+         login_view,
+         name='login'),
+
+    path('logout/',
+         logout_view,
+         name='logout'),
+
 ]
