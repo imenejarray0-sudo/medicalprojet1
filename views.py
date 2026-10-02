@@ -1,29 +1,51 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from .models import Consultation
+from patients.models import Patient
+from medecins.models import Medecin
+from rendezvous.models import RendezVous
+from django.contrib.auth.decorators import login_required
+@login_required
+def liste_consultations(request):
+
+    consultations = Consultation.objects.all()
+
+    return render(
+        request,
+        'consultations/liste.html',
+        {'consultations': consultations}
+    )
 
 
-def login_view(request):
+@login_required
+def ajouter_consultation(request):
+
+    patients = Patient.objects.all()
+    medecins = Medecin.objects.all()
+    rendezvous = RendezVous.objects.all()
+
 
     if request.method == "POST":
 
-        username = request.POST['username']
-        password = request.POST['password']
+        Consultation.objects.create(
 
-        user = authenticate(
-            username=username,
-            password=password
+            patient_id=request.POST['patient'],
+            medecin_id=request.POST['medecin'],
+            rendezvous_id=request.POST['rendezvous'],
+            date=request.POST['date'],
+            diagnostic=request.POST['diagnostic'],
+            traitement=request.POST['traitement']
+
         )
 
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-
-    return render(request, 'accounts/login.html')
+        return redirect('liste_consultations')
 
 
-
-def logout_view(request):
-
-    logout(request)
-
-    return redirect('/accounts/login/')
+    return render(
+        request,
+        'consultations/ajouter.html',
+        {
+            'patients':patients,
+            'medecins':medecins,
+            'rendezvous':rendezvous
+        }
+    )

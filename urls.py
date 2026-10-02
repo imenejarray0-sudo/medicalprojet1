@@ -1,15 +1,23 @@
 from django.urls import path
-from .views import login_view, logout_view
+from .views import (
+    liste_consultations,
+    ajouter_consultation
+)
 
 
 urlpatterns = [
 
-    path('login/',
-         login_view,
-         name='login'),
+    path(
+        '',
+        liste_consultations,
+        name='liste_consultations'
+    ),
 
-    path('logout/',
-         logout_view,
-         name='logout'),
+
+    path(
+        'ajouter/',
+        ajouter_consultation,
+        name='ajouter_consultation'
+    ),
 
 ]
